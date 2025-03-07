@@ -390,8 +390,7 @@ APP.get('/timeoffrequests-data', async (req, res) => {
 
 // Existing routes and code
 APP.get('/', (req, res) => {
-    res.sendFile(JOIN(__dirname, "../public", 'main.html')); 
-    // res.render('main');
+    res.render('template');  // This renders the 'template.ejs' file
 });
 
 APP.get('/your-time', async (req, res) => {
