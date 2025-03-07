@@ -17,6 +17,36 @@ APP.set('views', JOIN(__dirname, '..', 'public', 'views'));  // Points to public
 APP.use(EXPRESS.static(JOIN(__dirname, "../public")));  // Serve static files from 'public'
 APP.set('view engine', 'ejs');  // Use EJS as the view engine
 
+// Simulating userdata to pass to template
+const userdata = {
+    "John Doe": [
+        {
+            agentName: "John Doe",
+            team: "Team A",
+            managementUnit: "Unit A",
+            holidayCurrentYear: 15,
+            holidayNextYear: 20,
+            timeOffInLieu: 5
+        }
+    ],
+    "Jane Smith": [
+        {
+            agentName: "Jane Smith",
+            team: "Team B",
+            managementUnit: "Unit B",
+            holidayCurrentYear: 18,
+            holidayNextYear: 22,
+            timeOffInLieu: 3
+        }
+    ]
+};
+
+// Route to render 'template.ejs'
+APP.get('/', (req, res) => {
+    // Passing userdata to the template
+    res.render('template', { userdata: userdata });
+});
+
 // API call to get access token
 const getAccessToken = async () => {
     const clientId = 'cad3d0b4-0258-48a9-8a82-4ebdf9f9a0ff';
@@ -102,11 +132,6 @@ const sendDataToGenesys = async (data) => {
     }
 };
 
-// Route to render 'template.ejs'
-APP.get('/', (req, res) => {
-    res.render('template');  // Render 'template.ejs' from the 'views' directory
-});
-
 // Function to fetch management units from Genesys
 const getManagementUnits = async (token) => {
     const response = await AXIOS({
@@ -118,65 +143,6 @@ const getManagementUnits = async (token) => {
         }
     });
     return response.data.entities;
-};
-
-// Route to fetch time-off requests data
-APP.get('/timeoffrequests', async (req, res) => {
-    try {
-        const token = await getAccessToken();
-        const managementUnits = await getManagementUnits(token);
-
-        const timeOffRequests = {}; // Object to store time-off data
-
-        for (const unit of managementUnits) {
-            const users = await getUsersInManagementUnit(token, unit.id);
-
-            for (const user of users) {
-                const userDetails = await getUserDetails(token, user.id);
-                const requests = await getTimeOffRequests(token, unit.id, user.id);
-                const formattedRequests = formatTimeOffRequests(userDetails, unit.name, requests);
-
-                if (!timeOffRequests[userDetails.name]) {
-                    timeOffRequests[userDetails.name] = [];
-                }
-
-                timeOffRequests[userDetails.name].push(...formattedRequests);
-            }
-        }
-
-        res.render("template", { timeOffRequests });  // Pass data to template.ejs
-    } catch (error) {
-        console.error('Error fetching time off requests:', error);
-        res.status(500).send("Something went wrong when fetching time off requests");
-    }
-});
-
-// Example helper functions (replace these with your actual implementation)
-const getUsersInManagementUnit = async (token, managementUnitId) => {
-    // Fetch users in the management unit
-    return [];
-};
-
-const getUserDetails = async (token, userId) => {
-    // Fetch user details
-    return { name: 'John Doe' };
-};
-
-const getTimeOffRequests = async (token, managementUnitId, userId) => {
-    // Fetch time off requests
-    return [];
-};
-
-const formatTimeOffRequests = (userDetails, managementUnitName, requests) => {
-    // Format time off requests
-    return requests.map(request => ({
-        agentName: userDetails.name,
-        team: userDetails.team,
-        managementUnit: managementUnitName,
-        timeOffStart: request.startDate,
-        timeOffEnd: request.endDate,
-        balanceDeduction: request.deduction
-    }));
 };
 
 // Server setup
