@@ -12,7 +12,7 @@ const Buffer = require('buffer').Buffer;
 const APP = EXPRESS();
 const upload = multer({ dest: 'uploads/' });
 
-APP.set('views', JOIN(__dirname, "../public", 'views'));
+APP.set('views', JOIN(__dirname, '..', 'public', 'views'));
 APP.use(EXPRESS.static(JOIN(__dirname, "../public")));
 APP.set('view engine', 'ejs');
 
