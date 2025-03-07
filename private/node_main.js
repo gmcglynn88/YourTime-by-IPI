@@ -104,7 +104,7 @@ const sendDataToGenesys = async (data) => {
 
 // Route to render 'template.ejs'
 APP.get('/', (req, res) => {
-    res.render('template');  // Use EJS to render template.ejs from public/views
+    res.render('template');  // Render 'template.ejs' from the 'views' directory
 });
 
 // Function to fetch management units from Genesys
