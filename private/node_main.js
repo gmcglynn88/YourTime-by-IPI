@@ -108,7 +108,7 @@ APP.post('/upload', upload.single('csvFile'), (req, res) => {
 const sendDataToGenesys = async (data) => {
     const token = await getAccessToken();
     const datatableId = '3bcf89ba-8aed-4fdb-b143-a726c3887a27'; // Replace with your actual datatableId
-    const url = `https://api.euw2.pure.cloud/api/v2/flows/datatables/${datatableId}/rows`;
+    const url = `https://api.mypurecloud.ie/api/v2/flows/datatables/${datatableId}/rows`;
 
     // Convert data types and send each row
     for (const row of data) {
