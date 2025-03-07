@@ -30,15 +30,15 @@ APP.use(fetchFile);
 
 
 const getAccessToken = async () => {
-    const clientId = '427efa6a-d917-433c-97a2-3d0bdb08082d';
-    const clientSecret = '9wTXccmJqn6htGliu4Mfw1ckx9gwu_eMLcZDUrlJDIk';
+    const clientId = 'cad3d0b4-0258-48a9-8a82-4ebdf9f9a0ff';
+    const clientSecret = 'dBngyn4mG2Pu-lT4S_FLs23_8VhFyVYV-eNEbFYTFAY';
     const authString = `${clientId}:${clientSecret}`;
     const encodedAuthString = Buffer.from(authString).toString('base64');
 
     try {
         const response = await AXIOS({
             method: 'post',
-            url: 'https://login.euw2.pure.cloud/oauth/token',
+            url: 'https://apps.mypurecloud.ie/oauth/token',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Authorization': `Basic ${encodedAuthString}`
@@ -107,7 +107,7 @@ APP.post('/upload', upload.single('csvFile'), (req, res) => {
 
 const sendDataToGenesys = async (data) => {
     const token = await getAccessToken();
-    const datatableId = '22556f46-890e-4683-91d5-e2834920bcbe'; // Replace with your actual datatableId
+    const datatableId = '3bcf89ba-8aed-4fdb-b143-a726c3887a27'; // Replace with your actual datatableId
     const url = `https://api.euw2.pure.cloud/api/v2/flows/datatables/${datatableId}/rows`;
 
     // Convert data types and send each row
@@ -141,7 +141,7 @@ const sendDataToGenesys = async (data) => {
 
 const getManagementUnits = async (token) => {
     const response = await AXIOS({
-        url: 'https://api.euw2.pure.cloud/api/v2/workforcemanagement/managementunits',
+        url: 'https://api.mypurecloud.ie/api/v2/workforcemanagement/managementunits',
         method: 'get',
         headers: {
             'Content-Type': 'application/json',
@@ -155,7 +155,7 @@ const getManagementUnits = async (token) => {
 
 const getUsersInManagementUnit = async (token, managementUnitId) => {
     const response = await AXIOS({
-        url: `https://api.euw2.pure.cloud/api/v2/workforcemanagement/managementunits/${managementUnitId}/users`,
+        url: `https://api.mypurecloud.ie/api/v2/workforcemanagement/managementunits/${managementUnitId}/users`,
         method: 'get',
         headers: {
             'Content-Type': 'application/json',
@@ -167,7 +167,7 @@ const getUsersInManagementUnit = async (token, managementUnitId) => {
 
 const getUserDetails = async (token, userId) => {
     const response = await AXIOS({
-        url: `https://api.euw2.pure.cloud/api/v2/users/${userId}`,
+        url: `https://api.mypurecloud.ie/api/v2/users/${userId}`,
         method: 'get',
         headers: {
             'Content-Type': 'application/json',
@@ -180,7 +180,7 @@ const getUserDetails = async (token, userId) => {
 const getTimeOffRequests = async (token, managementUnitId, userId) => {
     try {
         const response = await AXIOS({
-            url: `https://api.euw2.pure.cloud/api/v2/workforcemanagement/managementunits/${managementUnitId}/users/${userId}/timeoffrequests`,
+            url: `https://api.mypurecloud.ie/api/v2/workforcemanagement/managementunits/${managementUnitId}/users/${userId}/timeoffrequests`,
             method: 'get',
             headers: {
                 'Content-Type': 'application/json',
@@ -209,7 +209,7 @@ const formatTimeOffRequests = (userDetails, managementUnitName, requests) => {
 
 const getTeams = async (token) => {
     const response = await AXIOS({
-        url: 'https://api.euw2.pure.cloud/api/v2/teams',
+        url: 'https://api.mypurecloud.ie/api/v2/teams',
         method: 'get',
         headers: {
             'Content-Type': 'application/json',
@@ -237,7 +237,7 @@ APP.get('/teams', async (req, res) => {
 
 const getTeamMembers = async (token, teamId) => {
     const response = await AXIOS({
-        url: `https://api.euw2.pure.cloud/api/v2/teams/${teamId}/members`,
+        url: `https://api.mypurecloud.ie/api/v2/teams/${teamId}/members`,
         method: 'get',
         headers: {
             'Content-Type': 'application/json',
@@ -308,7 +308,7 @@ APP.get('/timeoffrequests', async (req, res) => {
 // Function to fetch balances data
 const getBalancesData = async (token) => {
     const response = await AXIOS({
-        url: 'https://api.euw2.pure.cloud/api/v2/flows/datatables/22556f46-890e-4683-91d5-e2834920bcbe/rows?showbrief=false',
+        url: 'api.mypurecloud.ie/api/v2/flows/datatables/3bcf89ba-8aed-4fdb-b143-a726c3887a27/rows?showbrief=false',
         method: 'get',
         headers: {
             'Content-Type': 'application/json',
@@ -397,7 +397,7 @@ APP.get('/', (req, res) => {
 APP.get('/your-time', async (req, res) => {
     getAccessToken().then((token) => {
         AXIOS({
-            url: 'https://api.euw2.pure.cloud/api/v2/flows/datatables/22556f46-890e-4683-91d5-e2834920bcbe/rows?showbrief=false',
+            url: 'https://api.mypurecloud.ie/api/v2/flows/datatables/3bcf89ba-8aed-4fdb-b143-a726c3887a27/rows?showbrief=false',
             method: 'get',
             headers: {
                 'Content-Type': 'application/json',
@@ -436,7 +436,7 @@ APP.get('/your-time', async (req, res) => {
 APP.get('/your-time-data', async (req, res) => {
     getAccessToken().then((token) => {
         AXIOS({
-            url: 'https://api.euw2.pure.cloud/api/v2/flows/datatables/22556f46-890e-4683-91d5-e2834920bcbe/rows?showbrief=false',
+            url: 'https://api.mypurecloud.ie/api/v2/flows/datatables/3bcf89ba-8aed-4fdb-b143-a726c3887a27/rows?showbrief=false',
             method: 'get',
             headers: {
                 'Content-Type': 'application/json',
@@ -477,7 +477,7 @@ const get_id_name_pairs = async (req, res) => {
     const ids = req.params.ids ? req.params.ids : null;
     const state = req.params.state ? req.params.state : "any";
     
-    let url = "https://api.euw2.pure.cloud/api/v2/users"
+    let url = "https://api.mypurecloud.ie/api/v2/users"
     if(ids){
      url += `?id=${ids}&sortOrder=${order}&state=${state}`
     }
@@ -509,7 +509,7 @@ APP.get('/management-units', async (req, res) => {
     try {
         const token = await getAccessToken();
         const response = await AXIOS({
-            url: 'https://api.euw2.pure.cloud/api/v2/workforcemanagement/managementunits',
+            url: 'https://api.mypurecloud.ie/api/v2/workforcemanagement/managementunits',
             method: 'get',
             headers: {
                 'Content-Type': 'application/json',
